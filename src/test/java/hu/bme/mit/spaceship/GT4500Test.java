@@ -47,4 +47,59 @@ public class GT4500Test{
     verify(MockTS2, times(1)).fire(1);
   }
 
+  @Test
+  public void fireBothEmpty(){
+    // Arrange
+    when(MockTS1.isEmpty()).thenReturn(true);
+    when(MockTS2.isEmpty()).thenReturn(true);
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(MockTS1, times(0)).fire(1);
+    verify(MockTS2, times(0)).fire(1);
+  }
+
+  @Test
+  public void fireFirstEmpty(){
+    // Arrange
+    when(MockTS1.isEmpty()).thenReturn(true);
+    when(MockTS2.fire(1)).thenReturn(true);
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(MockTS1, times(0)).fire(1);
+    verify(MockTS2, times(1)).fire(1);
+  }
+
+  
+  @Test
+  public void fireAlternating(){
+    // Arrange
+    when(MockTS1.fire(1)).thenReturn(true);
+    when(MockTS2.fire(1)).thenReturn(true);
+    // Act
+    ship.fireTorpedo(FiringMode.SINGLE);
+    ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(MockTS1, times(1)).fire(1);
+    verify(MockTS2, times(1)).fire(1);
+  }
+  @Test
+  public void fireFirstTwice(){
+    // Arrange git config --global user.name "
+    when(MockTS1.fire(1)).thenReturn(true);
+    when(MockTS2.isEmpty()).thenReturn(true);
+    // Act
+    ship.fireTorpedo(FiringMode.SINGLE);
+    ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(MockTS1, times(2)).fire(1);
+
+  }
+
+
 }
